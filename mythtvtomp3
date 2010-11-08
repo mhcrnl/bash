@@ -9,6 +9,12 @@
 #
 ###########
 
+if [ $# -lt 1 ]; then
+  echo "Use: $0 <File> <Starttime ISO> <Title>"
+  echo -e "Converts a MythTV Radio recording to a Mp3 file and calls movetomobile"
+  exit
+fi
+
 BASEDIR="/home/mythtv/Video/"
 OUTPUTDIR="$BASEDIR/Radio"
 INPUTDIR="$BASEDIR"
