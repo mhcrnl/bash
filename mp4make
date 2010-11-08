@@ -1,0 +1,35 @@
+#!/bin/bash
+if [ $# -lt 1 ]; then
+  echo "Use: $0 <File to convert>"
+  exit
+fi
+
+FILE_IN=$1
+
+if [[ "$FILE_IN" =~ ^/ ]];
+  then
+    FROM=$FILE_IN
+  else
+    FROM=`pwd`/$FILE_IN
+fi
+
+TO="$FROM.mp4"
+
+ffmpeg -i "$FROM" -f mp4 -vcodec mpeg4 -maxrate 100k -b 56k -qmin 3 -qmax 5 -bufsize 4096 -g 300 -acodec libfaac -ar 44100 -ab 192k -s 320x240 -aspect 4:3 -r 25 "$TO"
+
+echo -e "Where do you want to copy the Video?\n"
+echo -e "Filme \nMusik \nBilder \nXXX \nOther \n Filme is the default"
+
+read  LOC; echo
+
+if [[ "$LOC" == "" ]];
+  then
+    echo "Don't copying"
+    exit
+  else
+    echo "Copying to $LOC"
+    movetombile "$TO" $LOC
+fi
+
+
+

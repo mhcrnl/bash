@@ -1,0 +1,8 @@
+#!/bin/sh
+
+for F in *
+do
+  RNUMBER=$((RANDOM%899+100))
+  NEW_FILE_NAME=$RNUMBER"_"$F
+  $(mv "$F" "$NEW_FILE_NAME")
+done

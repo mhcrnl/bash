@@ -1,0 +1,3 @@
+#!/bin/sh
+PASS=`cat /etc/cardatgirl`
+rdesktop tserver1.rheinahrcampus.de -g 1600x1180 -u jdielman -d racampus -p $PASS

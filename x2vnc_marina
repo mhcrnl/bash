@@ -1,0 +1,7 @@
+#!/bin/bash
+        while :;
+       do
+         x2vnc -passwd $HOME/.vnc_marina -resurface marina:0
+         sleep 2
+       done
+
