@@ -31,3 +31,5 @@ chmod 666 "$OUTFILE"
 ##########
 #YEAR=`date +%Y`
 #id3tag --artist="$PROGTITLE" --song="$PROGTITLE - $STARTDATE" --comment="" -y$YEAR -A"Radio" "$OUTFILE"
+
+movetomobile $OUTFILE Filme
