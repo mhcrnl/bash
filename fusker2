@@ -1,0 +1,86 @@
+#!/bin/sh
+
+if [ $# -lt 1 ]; then 
+  echo "Use: $0 URL [RANGE PREFIX SUFFIX]"
+  exit
+fi
+
+URL=$1
+NUM=$2
+PRE_IN=$3
+SUFFIX=$4
+PREPATH="/home/_Multimedia/.XXX/fusker/prefixes"
+DATE=`date +%Y-%m-%d_%H:%M`
+LINE="__________________________________________________________________________________________________________"
+[ "$NUM" = "" ] && NUM=20
+
+NUM_X[1]="[0-$NUM]"
+NUM_X[2]="[00-$NUM]"
+NUM_X[3]="[000-$NUM]"
+NUM_X[4]="[0000-$NUM]"
+
+URK=$(echo $URL | cut -d "/" -f-5)
+URI=$(echo $URL | awk -F/ '{ print $(NF) }')
+
+GET ()
+{
+	MYPATH=/home/joe/_Multimedia/_Video/.XXX/fusker/$URI
+	[ -d $MYPATH ] || mkdir -p $MYPATH
+	FILE=$MYPATH/$DATE"_"$PRE_OUT
+	echo -e "$DATE \n$URL \nRange: $NUM \nPrefixes: \n$PREFIX \n $LINE\n" >> $FILE
+	#echo -e "$DATE \n$URL \nRange: $NUM \nPrefixes: \n$PREFIX \n $LINE\n"
+	read
+	for PRE in $PREFIX
+	do
+		BRA=$(echo "$PRE" | awk -F \[[{\] '{ print NF}')
+		echo -e "Prefix: "$PRE"\nBra: "$BRA "\n"
+		j=1
+		BRA_I=`while [ "$j" -lt $BRA ]
+		do
+			echo -n "#$j"
+			let "j += 1"
+		done`
+		echo "curl $URK/$URI/$PRE.jpg -f -o $MYPATH/$BRA_I.jpg --create-dirs"
+		curl $URK/$URI/$PRE.jpg -f -o $MYPATH/$BRA_I.jpg --create-dirs
+		if [ "$?" == "0" ]; then 
+			echo -e "$URK/$URI/$PRE.jpg | $MYPATH/$BRA_I.jpg\n"  >> $FILE
+		fi
+		#echo "exit status of \"wgeter \" = $?"   # 1
+		#read
+	done
+}
+
+if [ "$PRE_IN" != "" ]; then
+  if [ "$PRE_IN" == "NULL" ]; then
+    PREFIX={}$NUM{$SUFFIX}
+    PRE_OUT=$PREFIX
+  elif [ "$PRE_IN" == "DSC" ]; then
+    PREFIX_DSC=$(cat "$PREPATH/pre_DSC")
+    for DSC in $PREFIX_DSC
+    do
+      PREFIX=$(echo -e "$PREFIX\n$DSC$NUM4")
+    done
+    PRE_OUT="DSC"
+  else
+    PREFIX={$PRE_IN}[$NUM]{$SUFFIX}
+    PRE_OUT=$PREFIX
+  fi
+	
+  GET
+
+else
+  PRE_OUT="ALL"
+  i=1
+  while [ "$i" -lt 5 ]; do
+	NUM_I=${NUM_X[$i]}
+	PREFIX_X=""
+	PREFIX_IN=$(cat "$PREPATH/pre_num$i")
+	for ITEM in $PREFIX_IN; do
+	  PREFIX=$(echo -e "$PREFIX\n{$ITEM}$NUM_I")
+	done
+	GET
+  	let "i += 1"
+  done
+fi
+
+#echo "Erfolgreich abgeschlossen" >> $FILE
