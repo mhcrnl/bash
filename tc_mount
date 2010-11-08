@@ -1,0 +1,17 @@
+#!/bin/sh
+if [ -z $1 ]; then echo "Bitte \"private\" oder \"xxx\" als Argument eingeben"; exit -1; fi
+if [ $1 == "private" ]; then VOLUME=0; fi
+if [ $1 == "xxx" ]; then VOLUME=1; fi
+
+KEYFILES="/home/joe/_Downloads/_Backups/_MISC/_PGP_Keys/secring.skr"
+TC_VOLUMES=(
+	[0]="/home/_Downloads/_Backups/_Truecrypt_Volumes/Privat.tc" 
+	[1]="/home/_Downloads/_Backups/_Truecrypt_Volumes/xxx"
+	)
+TC_MOUNTPATHS=(
+	[0]="/home/joe/_Multimedia/.Privat" 
+	[1]="/home/joe/_Multimedia/.XXX_TC"
+	)
+echo "mounting: "${TC_VOLUMES[$VOLUME]}" to: "${TC_MOUNTPATHS[$VOLUME]}
+read -sp "Password: " PW; echo
+truecrypt --text --protect-hidden=no --password=$PW --keyfiles=$KEYFILES ${TC_VOLUMES[$VOLUME]} ${TC_MOUNTPATHS[$VOLUME]}

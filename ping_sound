@@ -1,0 +1,36 @@
+#!/bin/sh
+STATE=0
+PSTATE=0
+NSTATE=0
+DATE=`date`
+HOST="miranda"
+echo $DATE
+
+while true; do
+#echo "________________NEXT ROUND_______________"
+STATUS=`ping -c 1 $HOST`
+if [ "$?" == "0" ]; then
+  #echo "Erfolg"
+  NSTATE=1
+  #echo -e "New State: $NSTATE\nPrev State: $PSTATE"
+  if [ "$PSTATE" != "$NSTATE" ]; then
+    echo "$HOST Online" `date`
+    mplayer /usr/share/sounds/k3b_success1.wav -really-quiet &
+    echo "$HOST Online" | osd_cat -o 10 -p bottom -A left --delay=10 --wait -f "-*-helvetica-*-r-*-*-48-*-*-*-*-*-*-*" -O 2 -u orange -c red &
+    PSTATE=$NSTATE
+  fi
+elif [ "$?" == "1" ]; then
+  #echo "`date` Misserfolg"
+  NSTATE=0
+  #echo -e "New State: $NSTATE\nPrev State: $PSTATE"
+  if [ "$PSTATE" != "$NSTATE" ] ; then
+    echo "$HOST Offline" `date`
+    mplayer /usr/share/sounds/k3b_error1.wav -really-quiet &
+    echo "$HOST Offline" | osd_cat -o 10 -p bottom -A left --delay=10 --wait -f "-*-helvetica-*-r-*-*-48-*-*-*-*-*-*-*" -O 2 -u orange -c red &
+    PSTATE=$NSTATE
+  fi
+else
+  echo "Status: $?"
+fi
+sleep 10
+done
