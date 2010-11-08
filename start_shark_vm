@@ -1,0 +1,5 @@
+#!/bin/bash
+cat /home/.shark.pid | xargs kill
+VirtualBox --comment WinXP\(shark\) --startvm ede5c38f-20b0-42ee-832b-89df8e6f90bb
+shark_online &
+

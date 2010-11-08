@@ -1,0 +1,7 @@
+#!/bin/bash
+DATE=`date +%Y-%m-%d_%H:%M`
+echo "$DATE - X11VNC gestartet" >> ~/.x11vnc.log
+x11vnc --auth /var/run/xauth/* >>~/.x11vnc.log  2>&1 &
+#x11vnc --auth /var/run/xauth/* -display :0.1 >>~/.x11vnc_0.1.log  2>&1 &
+echo "$DATE - X11VNC beendet" >> ~/.x11vnc.log
+echo "__________________________________________________" >> ~/.x11vnc.log

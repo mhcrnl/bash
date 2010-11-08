@@ -1,0 +1,33 @@
+#!/bin/sh
+LOG="/var/log/portage/auto_merge_uD.log"
+MAILADDR="sysgroup"
+DATE=`date +%Y-%m-%d_%Hh%Mm`
+PID="/var/run/start-merge.pid"
+if [[ -e $PID ]]; then exit; fi
+touch $PID
+#read
+echo "________________________SYNC PORTAGE TREE________________________\n" >  $LOG
+#emerge --sync >> $LOG
+eix-sync -q >> $LOG
+echo "___________________________BUILD LIST____________________________\n" >> $LOG
+emerge world -uDpv >> $LOG
+echo "________________________BUILDING PACKAGES________________________\n" >> $LOG
+emerge world -uDq --keep-going --jobs=2 >> $LOG
+eix '-u*' --format '<installedversions:NAMESLOT>' | xargs emerge -u >> $LOG
+echo "__________________________MEINE BUILDS__________________________\n" >> $LOG
+emerge www-client/chromium-bin -q>> $LOG
+#emerge www-client/chromium -q >> $LOG
+echo "________________________PRESERVED REBUILD________________________\n" >> $LOG
+emerge @preserved-rebuild --keep-going -q >> $LOG
+echo "_________________________REVDEP REBUILD__________________________\n" >> $LOG
+revdep-rebuild -- --keep-going -q >> $LOG
+echo "___________________________TEMP BUILDS___________________________\n" >> $LOG
+#perl-cleaner --all >> $LOG
+echo "_______________________________END_______________________________\n" >> $LOG
+cat "$LOG" | mail -s "Automerge vom $DATE:" "Johannes.Dielmann@gmail.com"
+cat "$LOG" | xsend.py "Johannes.Dielmann@gmail.com" 
+
+rm $PID
+
+
+#FORMAT_COMPACT="{installedversions}(){}<category>/<name>()" eix -cu | cut -d "[" -f1 | grep "/" | xargs emerge -v
