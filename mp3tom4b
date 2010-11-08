@@ -1,0 +1,38 @@
+#!/bin/sh
+
+if [ $# -ne "3" ] 
+then
+  read -p "Author: " AUTHOR
+  read -p "Album : " ALBUM
+  read -p "Year  : " YEAR
+else
+AUTHOR="$1"
+ALBUM="$2"
+YEAR="$3"
+fi
+
+PWD="$(pwd)";
+I=1;
+echo -e "_______________________Start Conversion of \"$AUTHOR's: $ALBUM\"______________________"
+for Folder in  */
+do
+  rm "$Folder"*.pcm
+  for File in "$Folder"*.mp3
+  do
+    OUT="$AUTHOR - $ALBUM - CD$I.m4b"
+    IN="$Folder""m4b_temp.pcm"
+    MPLAYER_IN="$File"
+    MPLAYER_OU="$File"_temp.pcm
+    echo -e "writing \n$MPLAYER_IN to \n$MPLAYER_OU"
+    mplayer -vc null -vo null -ao pcm:nowaveheader:fast:file="$MPLAYER_OU" "$MPLAYER_IN" -really-quiet
+    echo -e "adding \n$MPLAYER_OU to \n$IN"
+    cat "$MPLAYER_OU" >> "$IN"
+    echo -e "______________________$File DONE_______________________________\n"
+  done
+  echo "Converting $IN to $OUT:"
+  faac -R 44100 -B 16 -C 2 -X -w -q 80 --artist "$AUTHOR" --album "$ALBUM" --title "$ALBUM" --track "$I" --genre "Spoken Word" --year "$YEAR" -o "$OUT" "$IN"
+  rm "$Folder"/*.pcm
+  let "I += 1"
+  echo -e "______________________$Folder DONE_______________________________\n\n"
+done
+echo "_______________________________________________ALL DONE__________________________________"

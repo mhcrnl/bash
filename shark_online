@@ -1,0 +1,87 @@
+#!/usr/bin/python
+import sys,os,time,socket
+import xmpp
+from datetime import datetime
+
+pid = str(os.getpid())+'\n'
+open('/home/.shark.pid','w').write(pid)
+
+
+port = 60123
+if len(sys.argv)==2:
+  port = int(sys.argv[1])
+  
+print "Port: %s" % str(port)
+
+listener=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+listener.bind(('',port))
+listener.listen(5)
+today=datetime.today()
+
+def Send(JID, message):
+  #if len(sys.argv) < 2:
+  #  print "Syntax: xsend JID text"
+  #  sys.exit(0)
+
+  tojid=JID
+  #text=' '.join[message:]
+
+  jidparams={}
+  if os.access(os.environ['HOME']+'/.xsend',os.R_OK):
+    for ln in open(os.environ['HOME']+'/.xsend').readlines():
+        if not ln[0] in ('#',';'):
+            key,val=ln.strip().split('=',1)
+            jidparams[key.lower()]=val
+  for mandatory in ['jid','password']:
+    if mandatory not in jidparams.keys():
+        open(os.environ['HOME']+'/.xsend','w').write('#Uncomment fields before use and type in correct credentials.\n#JID=romeo@montague.net/resource (/resource is optional)\n#PASSWORD=juliet\n')
+        print 'Please point ~/.xsend config file to valid JID for sending messages.'
+        sys.exit(0)
+
+  jid=xmpp.protocol.JID(jidparams['jid'])
+  cl=xmpp.Client(jid.getDomain(),debug=[])
+
+  con=cl.connect()
+  if not con:
+    print 'could not connect!'
+    sys.exit()
+  #print 'connected with',con
+  auth=cl.auth(jid.getNode(),jidparams['password'],resource=jid.getResource())
+  if not auth:
+    print 'could not authenticate!'
+    sys.exit()
+  #print 'authenticated using',auth
+
+  #cl.SendInitPresence(requestRoster=0)   # you may need to uncomment this for old server
+  id=cl.send(xmpp.protocol.Message(tojid,text))
+  print 'sent message with id',id
+
+  time.sleep(1)   # some older servers will not send the message if you disconnect immediately after sending
+
+  #cl.disconnect()
+
+
+def Test():
+  while 1:
+    conn,addr = listener.accept()
+    text = 'Verbindung beendet!\nIP: %(a)s \nUhrzeit: %(t)s' % {'a': addr, 't': datetime.today() }
+    Send("Johannes.Dielmann@googlemail.com", text)
+    print "___________"
+    print text
+    print "___________________Verbindung beendet____________________"
+    #data = listener.recv(1024)
+    #print 'Received', repr(data)
+    break
+
+
+while 1:
+  print ("Ready. Waiting for Connections: ")
+  print ("Datum: %s" % str(today))
+  conn,addr = listener.accept()
+  text = 'Server Online!\nIP: %(a)s \nUhrzeit: %(t)s' % {'a': addr, 't': datetime.today() }
+  print(text)
+  #os.system("kdialog --title \"Server Online\" --sorry \"%s\"" % text)
+  #Send("shizodem@jabber.org", text)
+  Send("Johannes.Dielmann@googlemail.com", text)
+  Test()
+
