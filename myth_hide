@@ -1,0 +1,3 @@
+#!/bin/sh
+mysql < /etc/myth_hide_xxx -pmythtv -u mythtv
+#UPDATE `mythconverg`.`videometadata` SET `showlevel` = '2' WHERE `filename` LIKE '%.XXX%';
