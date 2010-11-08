@@ -1,0 +1,33 @@
+#!/bin/bash
+ 
+###########
+#
+# Suggested execution format in the job settings for the backend (in general of the backend setup)
+# Remember to allow the job to run in the backend general settings too :)
+#
+# autoaudio.sh %FILE% %STARTTIMEISO% "%TITLE%"
+#
+###########
+
+BASEDIR="/home/mythtv/Video/" 
+OUTPUTDIR="$BASEDIR/Mobile"
+INPUTDIR="$BASEDIR"
+INFILE=$1
+ISODATE=`date +%F`
+PROGTITLE=$3
+STARTDATE=${2:0:10}
+ 
+# Split
+###########
+OUTFILE="$OUTPUTDIR/$PROGTITLE/$PROGTITLE - $STARTDATE_$2.mp4"
+ 
+#transcode mp2 audio to mp3
+#ffmpeg -i "$INPUTDIR/$INFILE" -acodec libmp3lame -ab 192k -ar 44100 -f mp3 "$OUTFILE"
+ffmpeg -i "$INPUTDIR/$INFILE" -f mp4 -vcodec mpeg4 -maxrate 100k -b 56k -qmin 3 -qmax 5 -bufsize 4096 -g 300 -acodec libfaac -ar 44100 -ab 192k -ac 2 -s 320x240 -aspect 4:3 -r 25 "$OUTFILE"
+rm "$INPUTDIR/$INFILE"
+chmod 666 "$OUTFILE"
+ 
+# Tag
+##########
+#YEAR=`date +%Y`
+#id3tag --artist="$PROGTITLE" --song="$PROGTITLE - $STARTDATE" --comment="" -y$YEAR -A"Radio" "$OUTFILE"
