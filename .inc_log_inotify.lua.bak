@@ -1,0 +1,15 @@
+config.logs = {
+  apache    = { file = "/var/log/apache_miranda_combined_notme",
+                ignore = { "Changing fan level" },
+  },
+  awesome   = { file = "/home/joe/.awesome-errors",
+                ignore = {
+                  "/var/lib/dpkg", -- aptwidget failure when aptitude running
+                  "wicd", "wired profiles found", -- wicd junk
+                  "seek to:", "Close unzip stream", -- gmpc junk
+                  "^nolog"
+                },
+  },
+}
+config.logs_quiet = nil
+config.logs_interval = 1
