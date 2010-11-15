@@ -1,5 +1,5 @@
 #!/bin/bash
 echo 'naughty.notify({title = "testing", text = "Shutting down System in 60 seconds!", timeout = 60})' | awesome-client -
 sleep 60
-echo 'awesome.quit' | awesome-client -
+echo 'awesome.quit()' | awesome-client -
 sudo halt

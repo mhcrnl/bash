@@ -14,4 +14,4 @@ TC_MOUNTPATHS=(
 	)
 echo "mounting: "${TC_VOLUMES[$VOLUME]}" to: "${TC_MOUNTPATHS[$VOLUME]}
 read -sp "Password: " PW; echo
-truecrypt --text --protect-hidden=no --password=$PW --keyfiles=$KEYFILES ${TC_VOLUMES[$VOLUME]} ${TC_MOUNTPATHS[$VOLUME]}
+sudo truecrypt --text --protect-hidden=no --password=$PW --keyfiles=$KEYFILES ${TC_VOLUMES[$VOLUME]} ${TC_MOUNTPATHS[$VOLUME]}

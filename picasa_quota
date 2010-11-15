@@ -1,0 +1,29 @@
+#!/bin/sh
+MOUNTPOINT="/home/_Multimedia/.Privat"
+mount | grep $MOUNTPOINT ; # <-- z.B. /home
+if [ $? == 0 ] ;
+  then	    # Aktion wenn bereits gemountet;
+    echo "Already mounted - Good!"
+  else      # Aktion wenn noch nicht gemountet;
+    echo "Not mounted. Mounting now: "
+	xterm -title 'mount private'  -e 'tc_mount private'
+    echo "Status of mount: $?"
+	if [ $? == 0 ] ;
+	  then      # Erfolgreich
+		echo "Erfolgreich"
+	  else      # Anderes!
+		echo "Exit status: $?"
+		return $?
+	fi
+fi
+
+if [ $? == 0 ] ;
+  then      # Erfolgreich
+    echo "Erfolgreich"
+  else      # Anderes!
+    echo "Exit status: $?"
+    return $?
+fi
+
+export SUDO_ASKPASS="/home/_Downloads/_Programme/_MISC/_SVN_APPS/bash/ask_pass"
+sudo -A -u quota picasa
