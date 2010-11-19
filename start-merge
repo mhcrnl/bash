@@ -12,7 +12,8 @@ eix-sync -q >> $LOG
 echo "___________________________BUILD LIST____________________________\n" >> $LOG
 emerge world -uDpv >> $LOG
 echo "________________________BUILDING PACKAGES________________________\n" >> $LOG
-emerge world -uDq --keep-going --jobs=2 >> $LOG
+emerge system -uDNq --keep-going --jobs=2 >> $LOG
+emerge world -uDNq --keep-going --jobs=2 >> $LOG
 eix '-u*' --format '<installedversions:NAMESLOT>' | xargs emerge -u >> $LOG
 echo "__________________________MEINE BUILDS__________________________\n" >> $LOG
 emerge www-client/chromium-bin -q>> $LOG
