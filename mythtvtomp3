@@ -35,4 +35,5 @@ ffmpeg -i "$INPUTDIR/$INFILE" -acodec libmp3lame -ab 192k -ar 44100 -f mp3 "$OUT
 YEAR=`date +%Y`
 id3tag --artist="$PROGTITLE" --song="$PROGTITLE - $STARTDATE" --comment="" -y$YEAR -A"Radio" "$OUTFILE"
 
-movetomobile "$OUTFILE" "MythTV"
+movetomobile "$OUTFILE" "TV"
+if [ $? == 0 ]; then mv "$OUTFILE" "$OUTFILE_sucess"; echo "Successfully moved $OUTFILE to Mobile"; fi
