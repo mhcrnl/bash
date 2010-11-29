@@ -13,13 +13,14 @@ echo "___________________________BUILD LIST____________________________\n" >> $L
 emerge world -uDpv >> $LOG
 echo "________________________BUILDING PACKAGES________________________\n" >> $LOG
 emerge system -uDNq --keep-going --jobs=2 >> $LOG
-emerge world -uDNq --keep-going --jobs=2 >> $LOG
+emerge world  -uDNq --keep-going --jobs=2 >> $LOG
 eix '-u*' --format '<installedversions:NAMESLOT>' | xargs emerge -u >> $LOG
 echo "__________________________MEINE BUILDS__________________________\n" >> $LOG
-emerge www-client/chromium-bin -q>> $LOG
-#emerge www-client/chromium -q >> $LOG
-echo "________________________PRESERVED REBUILD________________________\n" >> $LOG
-emerge @preserved-rebuild --keep-going -q >> $LOG
+emerge media-video/ffmpeg 	-q>> $LOG
+emerge www-client/chromium-bin 	-q>> $LOG
+emerge www-client/chromium 	-q >> $LOG
+#echo "________________________PRESERVED REBUILD________________________\n" >> $LOG
+#emerge @preserved-rebuild --keep-going -q >> $LOG
 echo "_________________________REVDEP REBUILD__________________________\n" >> $LOG
 revdep-rebuild -- --keep-going -q >> $LOG
 echo "___________________________TEMP BUILDS___________________________\n" >> $LOG
