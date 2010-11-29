@@ -65,5 +65,5 @@ fi
 echo -e "rsync '$FROM' \t$TO."
 rsync --progress "$FROM" "$TO"
 echo "Status of rsync: $?"
-if [ $? == 0 ]; then mv "$FROM" "$FROM_sucess"; fi
+if [ $? == 0 ]; then mv "$FROM" "$FROM""_sucess"; fi
 

@@ -17,7 +17,8 @@ echo -e "_______________________Start Conversion of \"$AUTHOR's: $ALBUM\"_______
 for Folder in  */
 do
   rm "$Folder"*.pcm
-  for File in "$Folder"*.mp3
+  #for File in "$Folder"{*.mp3,*.m4a}
+  for File in "$Folder"*.m4a
   do
     OUT="$AUTHOR - $ALBUM - CD$I.m4b"
     IN="$Folder""m4b_temp.pcm"
