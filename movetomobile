@@ -2,7 +2,7 @@
 if [ $# -lt 1 ]; then
   echo "Use: $0 <File to send to mobile> [Location on Mobile]"
   echo "Possible Locations are: "
-  echo -e "Filme \nMusik \nBilder \nXXX \nTV \nOther \n Filme is the default"
+  echo -e "Filme \nMusik \nBilder \nXXX \nMythTV \nHörbücher \nOther \n Filme is the default"
   exit
 fi
 
@@ -23,7 +23,8 @@ Musik
 Bilder 
 XXX 
 Other 
-TV
+TV | MythTV
+Hörbücher
 Filme ist Standard
 " TO_IN; echo 
 
@@ -38,6 +39,10 @@ case $TO_IN in
   TO=$MOBILE_MP"/Video/podcast/Eigene";;
 "TV"*)
   TO=$MOBILE_MP"/Music/podcast/MythTV";;
+"MythTV"*)
+  TO=$MOBILE_MP"/Music/podcast/MythTV";;
+"Hörbücher"*)
+  TO=$MOBILE_MP"/Music/Hörbücher";;
 "Other"*)
   TO=$MOBILE_MP"/Other";;
 *)
@@ -64,6 +69,4 @@ fi
 
 echo -e "rsync '$FROM' \t$TO."
 rsync --progress "$FROM" "$TO"
-echo "Status of rsync: $?"
-if [ $? == 0 ]; then mv "$FROM" "$FROM""_sucess"; fi
 

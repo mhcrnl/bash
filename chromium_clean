@@ -1,0 +1,1 @@
+rm -rf /home/joe/.config/chromium/Clean && chromium --user-data-dir=/home/joe/.config/chromium/Clean -enable-default-apps
