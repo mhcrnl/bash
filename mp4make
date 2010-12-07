@@ -17,10 +17,15 @@ TO="$FROM.mp4"
 
 ffmpeg -i "$FROM" -f mp4 -vcodec mpeg4 -maxrate 100k -b 56k -qmin 3 -qmax 5 -bufsize 4096 -g 300 -acodec libfaac -ar 44100 -ab 192k -s 320x240 -aspect 4:3 -r 25 "$TO"
 
-echo -e "Where do you want to copy the Video?\n"
-echo -e "Filme \nMusik \nBilder \nXXX \nOther \n Filme is the default"
-
-read  LOC; echo
+read -t 30 -p "Wohin soll kopiert werden?
+Filme 
+Musik 
+Bilder 
+XXX 
+Other 
+TV | MythTV
+Hörbücher
+" LOC; echo 
 
 if [[ "$LOC" == "" ]];
   then
@@ -30,6 +35,4 @@ if [[ "$LOC" == "" ]];
     echo "Copying to $LOC"
     movetombile "$TO" $LOC
 fi
-
-
-
+if [ $? == 0 ]; then mv "$TO" "$TO""_sucess"; fi

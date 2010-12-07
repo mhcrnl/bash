@@ -1,0 +1,14 @@
+#!/bin/bash
+id=0
+SQL_1='SELECT `filename`, `intid` FROM `videometadata`;'
+mysql -u mythtv -pmythtv mythconverg -e "$SQL_1" | while read line
+do
+  file=$(echo "$line" |cut -f1 )
+  id=$(echo "$line" |cut -f2 )
+  in="/home/_Multimedia/_Video/$file"
+  out="/home/mythtv/coverart/id-$id"
+  echo "Creating Thumb for "$in" to "$out
+  ffmpeg -i "$in" -an -ss 8 -an -r 1 -vframes 1 -y -f mjpeg "$out.jpg"
+  SQL_2='UPDATE  `mythconverg`.`videometadata` SET  `coverfile` =  "id-'$id'.jpg" WHERE  `videometadata`.`intid` ='$id' LIMIT 1 ;'
+  mysql -u mythtv -pmythtv mythconverg -e "$SQL_2"
+done
