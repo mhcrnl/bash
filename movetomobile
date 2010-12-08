@@ -68,5 +68,5 @@ if [ -d $TO ]
 fi 
 
 echo -e "rsync '$FROM' \t$TO."
-rsync --progress "$FROM" "$TO"
+rsync --progress -r "$FROM" "$TO"
 

@@ -1,9 +1,10 @@
 #!/bin/sh
 STATE=0
-PSTATE=0
-NSTATE=0
+PSTATE=-1
+NSTATE=-1
 DATE=`date`
-HOST="miranda"
+HOST=$1
+[ "$HOST" = "" ] && HOST="miranda"
 echo $DATE
 
 while true; do
