@@ -1,0 +1,1 @@
+SELECT *  FROM `amarok_clean`.`statistics` WHERE `deviceid`=35 ORDER BY `statistics`.`rating`  DESC

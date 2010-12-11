@@ -1,0 +1,29 @@
+#!/bin/bash
+id=0
+user=amarok
+password=amarok
+db=amarok_clean
+db_host=joed.homeip.net
+id=59
+tables="
+directories
+embed
+images
+lyrics
+statistics
+tags
+tags_labels
+uniqueid"
+
+for table in $tables
+do
+  SQL_11='DELETE FROM `'$table'` WHERE `'$table'`.`deviceid` = '$id
+  SQL_12="SELECT * FROM "$table" WHERE "$table".deviceid = "$id";"
+  #echo $SQL_1
+  mysql -u $user -p$password $db -h $db_host -e "$SQL_11"
+done
+
+SQL_21='DELETE FROM `devices` WHERE `devices`.`id` = '$id
+#SQL_22='SELECT * FROM `devices` WHERE `devices`.`id` = '$id
+#echo $SQL_2
+mysql -u $user -p$password $db -h $db_host -e "$SQL_21"

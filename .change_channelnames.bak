@@ -1,13 +1,13 @@
 #!/bin/bash
 id=0
-SQL_1='SELECT `callsign`, `mplexid`, `chanid` FROM `channel`;'
+SQL_1='SELECT `name`, `mplexid`, `chanid` FROM `channel`;'
 mysql -u mythtv -pmythtv mythconverg -h joed.homeip.net -e "$SQL_1" | while read line
 do
   name=$(echo "$line"    |cut -f1 )
   mplexid=$(echo "$line" |cut -f2 )
   chanid=$(echo "$line"  |cut -f3 )
   echo "$chanid $mplexid $name"
-  SQL_2='UPDATE  `mythconverg`.`channel` SET  `callsign` =  "'$mplexid"_"$name'" WHERE  `channel`.`chanid` ='$chanid' LIMIT 1 ;'
+  SQL_2='UPDATE  `mythconverg`.`channel` SET  `name` =  "'$mplexid"_"$name'" WHERE  `channel`.`chanid` ='$chanid' LIMIT 1 ;'
   #echo $SQL_2
   mysql -u mythtv -pmythtv mythconverg -h joed.homeip.net -e "$SQL_2"
 done
