@@ -6,7 +6,7 @@
 
 if [ `hostname` = "miranda" ]
 then
-  java -jar /home/joe/.jd/JDownloader.jar
+  java -jar /usr/local/JD/JDownloader.jar
 else
   vncviewer -passwd /home/joe/.vnc/miranda miranda
 fi
