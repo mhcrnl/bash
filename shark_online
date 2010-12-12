@@ -1,4 +1,9 @@
 #!/usr/bin/python
+#
+# A python script by JoeD - Joe84D@gmail.com
+#
+# Waits for a packet from an external Server and notifies me via jabber
+
 import sys,os,time,socket
 import xmpp
 from datetime import datetime
