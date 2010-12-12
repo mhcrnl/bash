@@ -1,3 +1,12 @@
 #!/bin/bash
-#java -jar /home/joe/.jd/JDownloader.jar
-vncviewer -passwd /home/joe/.vnc/miranda miranda
+#
+# A bash script by JoeD - Joe84D@gmail.com
+#
+# Opens a VNC Session to my Server or starts JDownloader if started on the server
+
+if [ `hostname` = "miranda" ]
+then
+  java -jar /home/joe/.jd/JDownloader.jar
+else
+  vncviewer -passwd /home/joe/.vnc/miranda miranda
+fi

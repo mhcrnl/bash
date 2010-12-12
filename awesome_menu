@@ -1,2 +1,7 @@
 #!/bin/bash
+#
+# A bash script by JoeD - Joe84D@gmail.com
+#
+# Opens the Awesome Mainmenu from the console.
+ 
 echo 'mymainmenu:toggle()' | awesome-client -

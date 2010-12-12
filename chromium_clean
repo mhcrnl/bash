@@ -1,1 +1,8 @@
-rm -rf /home/joe/.config/chromium/Clean && chromium --user-data-dir=/home/joe/.config/chromium/Clean -enable-default-apps
+#!/bin/bash
+#
+# A bash script by JoeD - Joe84D@gmail.com
+#
+# Cleans out any Profile Data and starts Chromium in a clean enviroment.
+
+rm -rf /home/joe/.config/chromium/Clean 
+chromium --user-data-dir=/home/joe/.config/chromium/Clean -enable-default-apps

@@ -1,1 +1,7 @@
+#!/bin/bash
+#
+# A bash script by JoeD - Joe84D@gmail.com
+#
+# Use Mplayer as a TV-Application for an analog TV-Device
+
 mplayer -input conf=input.tv tv://

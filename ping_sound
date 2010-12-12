@@ -1,4 +1,9 @@
-#!/bin/sh
+#!/bin/bash
+#
+# A bash script by JoeD - Joe84D@gmail.com
+#
+# Checks a given or the default host if up and plays a sound on status change
+
 STATE=0
 PSTATE=-1
 NSTATE=-1

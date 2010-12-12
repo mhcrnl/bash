@@ -1,4 +1,9 @@
-#!/bin/sh
+#!/bin/bash
+#
+# A bash script by JoeD - Joe84D@gmail.com
+#
+# Prepends a 4-Digit random number before any file in the current directory
+# A little randomizer for Old Car Radios with a real bad built in Random funciton
 
 for F in *
 do

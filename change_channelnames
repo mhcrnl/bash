@@ -1,4 +1,10 @@
 #!/bin/bash
+#
+# A bash script by JoeD - Joe84D@gmail.com
+#
+# Script to prepend the Multiplex ID before the Channelname. 
+#You can view and record multiple Channels if they are on the same Multiplexer.
+
 id=0
 SQL_1='SELECT `callsign`, `mplexid`, `chanid` FROM `channel`;'
 mysql -u mythtv -pmythtv mythconverg -h joed.homeip.net -e "$SQL_1" | while read line

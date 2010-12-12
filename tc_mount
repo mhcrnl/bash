@@ -1,4 +1,9 @@
-#!/bin/sh
+#!/bin/bash
+#
+# A bash script by JoeD - Joe84D@gmail.com
+#
+# Helper script to mount my Truecrypt Volumes
+
 if [ -z $1 ]; then echo "Bitte \"private\" oder \"xxx\" als Argument eingeben"; exit -1; fi
 if [ $1 == "private" ]; then VOLUME=0; fi
 if [ $1 == "xxx" ]; then VOLUME=1; fi

@@ -1,3 +1,8 @@
-#!/bin/sh
+#!/bin/bash
+#
+# A bash script by JoeD - Joe84D@gmail.com
+#
+# Sets the Parental Level for all Videos in the MythTV database which are not suitable for minors.
+# /etc/myth_hide_xxx: UPDATE `mythconverg`.`videometadata` SET `showlevel` = '2' WHERE `filename` LIKE '%.XXX%';
+
 mysql < /etc/myth_hide_xxx -pmythtv -u mythtv
-#UPDATE `mythconverg`.`videometadata` SET `showlevel` = '2' WHERE `filename` LIKE '%.XXX%';

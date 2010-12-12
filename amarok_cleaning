@@ -1,5 +1,9 @@
 #!/bin/bash
-#A Script that cleans out evrything of the amarok database with a given ID
+#
+# A bash script by JoeD - Joe84D@gmail.com
+#
+# A Script that cleans out evrything of the amarok database with a given ID
+#
 id=0
 user=amarok
 password=amarok

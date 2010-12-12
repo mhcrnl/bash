@@ -1,4 +1,10 @@
 #!/bin/bash
+#!/bin/bash
+#
+# A bash script by JoeD - Joe84D@gmail.com
+#
+# Shutdown script for awesome - not functional...
+
 echo 'naughty.notify({title = "testing", text = "Shutting down System in 60 seconds!", timeout = 60})' | awesome-client -
 sleep 60
 su -c halt

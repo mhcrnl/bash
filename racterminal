@@ -1,3 +1,8 @@
-#!/bin/sh
+#!/bin/bash
+#
+# A bash script by JoeD - Joe84D@gmail.com
+#
+# Opens a session to a Terminal Server at my FH
+
 PASS=`cat /etc/cardatgirl`
 rdesktop tserver1.rheinahrcampus.de -g 1600x1180 -u jdielman -d racampus -p $PASS

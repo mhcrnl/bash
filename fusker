@@ -1,4 +1,8 @@
-#!/bin/sh
+#!/bin/bash
+#
+# A bash script by JoeD - Joe84D@gmail.com
+#
+# A Script do Bruteforce ph#tob#cket folders
 
 URL=$1
 NUM=$2

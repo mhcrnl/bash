@@ -1,5 +1,9 @@
 #!/bin/zsh
-#get_photos
+#
+# A bash script by JoeD - Joe84D@gmail.com
+#
+# Mounting my mobile and moving the Photos from the Camera to the PC
+
 MOBILE_MP="/mnt/c905/Memory_Stick"
 mount | grep $MOBILE_MP ; # <-- z.B. /home
 if [ $? == 0 ] ;

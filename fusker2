@@ -1,4 +1,8 @@
-#!/bin/sh
+#!/bin/bash
+#
+# A bash script by JoeD - Joe84D@gmail.com
+#
+# Improved BF PB fetcher
 
 if [ $# -lt 1 ]; then 
   echo "Use: $0 URL [RANGE PREFIX SUFFIX]"

@@ -1,4 +1,9 @@
-#!/bin/sh
+#!/bin/bash
+#
+# A bash script by JoeD - Joe84D@gmail.com
+#
+# Mounts a TC Volume with private Data.
+
 MOUNTPOINT="/home/_Multimedia/.Privat"
 mount | grep $MOUNTPOINT ; # <-- z.B. /home
 if [ $? == 0 ] ;
@@ -17,13 +22,7 @@ if [ $? == 0 ] ;
 	fi
 fi
 
-if [ $? == 0 ] ;
-  then      # Erfolgreich
-    echo "Erfolgreich"
-  else      # Anderes!
-    echo "Exit status: $?"
-    return $?
-fi
-
-export SUDO_ASKPASS="/home/_Downloads/_Programme/_MISC/_SVN_APPS/bash/ask_pass"
+xhost "+localhost"
+export SUDO_ASKPASS="/usr/bin/ask_pass"
 sudo -A -u quota picasa
+#sudo "truecrypt -t -d $MOUNTPOINT"
