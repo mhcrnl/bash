@@ -1,0 +1,126 @@
+#!/usr/bin/env python
+
+import select
+import socket
+import sys,os,time,socket
+import xmpp
+from datetime import datetime
+
+PORT_IN  = 60123
+PORT_OUT = 60124
+	
+listener = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+listener.bind(('', PORT_IN))
+listener.listen(5)
+sender = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+sender.bind(('', PORT_OUT))
+sender.listen(5)
+today=datetime.today()
+
+
+print 'Listening on port ', PORT_IN
+	
+read_set = [listener]
+read_set_o = [sender]
+
+
+def Send(JID, message):
+  tojid=JID
+  jidparams={}
+  if os.access(os.environ['HOME']+'/.xsend',os.R_OK):
+    for ln in open(os.environ['HOME']+'/.xsend').readlines():
+        if not ln[0] in ('#',';'):
+            key,val=ln.strip().split('=',1)
+            jidparams[key.lower()]=val
+  for mandatory in ['jid','password']:
+    if mandatory not in jidparams.keys():
+        open(os.environ['HOME']+'/.xsend','w').write('#Uncomment fields before use and type in correct credentials.\n#JID=romeo@montague.net/resource (/resource is optional)\n#PASSWORD=juliet\n')
+        print 'Please point ~/.xsend config file to valid JID for sending messages.'
+        sys.exit(0)
+
+  jid=xmpp.protocol.JID(jidparams['jid'])
+  cl=xmpp.Client(jid.getDomain(),debug=[])
+
+  con=cl.connect()
+  if not con:
+    print 'could not connect!'
+    sys.exit()
+  #print 'connected with',con
+  auth=cl.auth(jid.getNode(),jidparams['password'],resource=jid.getResource())
+  if not auth:
+    print 'could not authenticate!'
+    sys.exit()
+  #print 'authenticated using',auth
+  #cl.SendInitPresence(requestRoster=0)   # you may need to uncomment this for old server
+  id=cl.send(xmpp.protocol.Message(tojid,text))
+  print 'sent message with id',id
+  time.sleep(1)   # some older servers will not send the message if you disconnect immediately after sending
+
+
+def Test(data):
+	s, x, f = select.select(read_set_o, [], [], 5.0)
+	for sock_o in s:
+		if sender == sock_o:
+			conn_o, addr_o = sock_o.accept()
+			print 'Connection from %s on port %d' % addr
+			read_set_o.append(conn_o)
+			break
+		if data:
+			sock_o.sendall(data)
+			#text = 'Verbindung beendet!\nIP: %(a)s \nUhrzeit: %(t)s' % {'a': addr, 't': datetime.today() }
+			#Send("Johannes.Dielmann@googlemail.com", text)
+
+		else:
+			print 'Closed connection from ', sock_o.getpeername()
+			sock_o.close()
+			read_set.remove(sock_o)			
+
+
+#def Test():
+#    conn,addr = listener.accept()
+#    text = 'Verbindung beendet!\nIP: %(a)s \nUhrzeit: %(t)s' % {'a': addr, 't': datetime.today() }
+#    Send("Johannes.Dielmann@googlemail.com", text)
+#    print "___________"
+#    print text
+#    print "___________________Verbindung beendet____________________"
+
+#while 1:
+#  conn,addr = listener.accept()
+#  text = 'Server Online!\nIP: %(a)s \nUhrzeit: %(t)s' % {'a': addr, 't': datetime.today() }
+#  print(text)
+#  #os.system("kdialog --title \"Server Online\" --sorry \"%s\"" % text)
+#  #Send("shizodem@jabber.org", text)
+#  Send("Johannes.Dielmann@googlemail.com", text)
+#  Test()
+
+
+
+while True:
+	print ("Ready. Waiting for Connections: ")
+  	print ("Datum: %s" % str(today))
+	r, w, e = select.select(read_set, [], [], 5.0)
+	if not r:
+		print 'No traffic but still alive'
+		continue
+	for sock in r:
+		if listener == sock:
+			conn, addr = sock.accept()
+			print 'Connection from %s on port %d' % addr
+			read_set.append(conn)
+			text = 'Server Online!\nIP: %(a)s \nUhrzeit: %(t)s' % {'a': addr, 't': datetime.today() }
+			#Send("Johannes.Dielmann@googlemail.com", text)
+			#Test()
+			break
+		data = sock.recv(1024)
+		if data:
+			print 'Got %d bytes from %s' % (len(data), sock.getpeername())	
+			sock.sendall('Thanks for sending: \'%s\'\r\n' % data[:-2])
+			Test(data)
+			text = 'Verbindung beendet!\nIP: %(a)s \nUhrzeit: %(t)s' % {'a': addr, 't': datetime.today() }
+			Send("Johannes.Dielmann@googlemail.com", text)
+
+		else:
+			print 'Closed connection from ', sock.getpeername()
+			sock.close()
+			read_set.remove(sock)
+	

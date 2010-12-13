@@ -1,0 +1,2 @@
+#!/bin/bash
+wol 00:10:DC:DD:A4:5A
