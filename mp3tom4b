@@ -1,4 +1,8 @@
-#!/bin/sh
+#!/bin/bash
+#
+# A bash script by JoeD - Joe84D@gmail.com
+#
+# Converts a mp3/m4a File to an m4b Audiobook
 
 if [ $# -ne "3" ] 
 then
