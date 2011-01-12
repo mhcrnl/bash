@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/bin/bash
 #
 # A bash script by JoeD - Joe84D@gmail.com
 #
@@ -12,8 +12,8 @@ if [ $? == 0 ] ;
   else      # Aktion wenn noch nicht gemountet;
     echo "Not mounted. Mounting now: "
     sudo mount $MOBILE_MP
-    echo "Status of mount: $?"
+    if [ $? != 0 ]; then exit; fi
 fi
 
-mv "$MOBILE_MP/DCIM/100MSDCF/"* "/home/joe/_Handy/_Incomming"
+mv $MOBILE_MP/DCIM/100MSDCF/* "/home/joe/_Handy/_Incomming"
 #rsync -r $MOBILE_MP/DCIM/100MSDCF/ /home/joe/_Handy/_Incomming --del --progress

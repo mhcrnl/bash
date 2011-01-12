@@ -1,0 +1,4 @@
+#!/bin/bash
+PACKAGES=`eix '-u*' --format '<installedversions:NAMESLOT>'`
+echo $PACKAGES
+emerge --keep-going $PACKAGES

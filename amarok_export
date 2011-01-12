@@ -1,0 +1,67 @@
+#!/bin/bash
+#
+# A bash script by JoeD - Joe84D@gmail.com
+#
+# A Script to export Statistics
+#
+
+user=amarok
+password=amarok
+db=amarok_clean
+db_host=joed.homeip.net
+
+SQL_AMA="SELECT * FROM statistics WHERE rating >0;"
+mysql -u $user -p$password $db -h $db_host -e "$SQL_AMA" -ss | while read line
+do
+  #echo -e "Data: "$line
+  url=$(echo "$line"        |cut -f1 )
+  deviceid=$(echo "$line"   |cut -f2 )
+  c_date=$(echo "$line"     |cut -f3 )
+  a_date=$(echo "$line"     |cut -f4 )
+  percent=$(echo "$line"    |cut -f5 )
+  rating_in=$(echo "$line"  |cut -f6 )
+  playcount=$(echo "$line"  |cut -f7 )
+  uniqueid=$(echo "$line"   |cut -f8 )
+  deleted=$(echo "$line"    |cut -f9 )
+  urs=$(echo "$url"         | cut -d '/' -f 5- )
+  FIELDS=$(echo "$urs"      | awk -F/ '{print NF}')
+  let FIELDS=FIELDS-1
+  MYTH_PATH=$(echo "$urs"   | cut -d '/' -f -$FIELDS)
+  MYTH_FILE=$(echo "$urs"   | awk -F/ '{print $(NF)}')
+  AC_DATE=`date --date "Jan 1, 1970 00:00:00 +0000 + $a_date seconds" --rfc-3339=seconds|cut -c-19`
+  
+  echo -e "
+  URS=      $urs
+  FIELDS=   $FIELDS
+  PATH=     $MYTH_PATH
+  FILE=     $MYTH_FILE
+  AC_DATE=  $AC_DATE"0
+  rating=`echo "tmp=$rating_in/2; tmp /= 1; tmp" | bc`;
+  SQL_AMP_ID="SELECT id FROM song WHERE file LIKE '%$urs%';"
+  AMP_ID=`mysql -u ampache -pampache ampache_35 -h $db_host -e "$SQL_AMP_ID" -ss`
+  echo -e "
+  URS:      $urs
+  AMP_ID:   $AMP_ID
+  RATING:   $rating"
+  SQL_AMP_RATING="SELECT * FROM rating WHERE object_type='song' AND object_id=$AMP_ID;"
+  if [true]
+  then
+    SQL_AMP_INSERT='INSERT INTO `ampache_35`.`rating` (`id`, `user`, `object_type`, `object_id`, `rating`)'" VALUES (NULL, '2', 'song', '$AMP_ID', '$rating');"
+    mysql -u ampache -pampache ampache_35 -h $db_host -e "$SQL_AMP_INSERT" -ss
+  else
+    SQL_AMP_UPDATE="UPDATE rating SET rating=$rating WHERE object_id=$AMP_ID"
+    mysql -u ampache -pampache ampache_35 -h $db_host -e "$SQL_AMP_INSERT" -ss
+  fi
+  
+  SQL_MYTH_FOLDER_ID="SELECT directory_id FROM music_directories WHERE path LIKE '%$MYTH_PATH%';"
+  MYTH_FOLDER_ID=`mysql -u mythtv -pmythtv mythconverg -h $db_host -e "$SQL_MYTH_FOLDER_ID" -ss`
+  SQL_MYTH_SONG_ID="SELECT song_id FROM music_songs WHERE filename LIKE '$MYTH_FILE' AND directory_id=$MYTH_FOLDER_ID;"
+  MYTH_SONG_ID=`mysql -u mythtv -pmythtv mythconverg -h $db_host -e "$SQL_MYTH_SONG_ID" -ss`
+  SQL_MYTH_UPDATE="UPDATE music_songs SET rating=$rating_in, numplays=$playcount, date_modified='$AC_DATE' WHERE song_id=$MYTH_SONG_ID;"
+  mysql -u mythtv -pmythtv mythconverg -h $db_host -e "$SQL_MYTH_UPDATE" -ss
+  echo -e "
+  MYTH_DIR_ID:   $MYTH_FOLDER_ID
+  MYTH_SONG_ID:    $MYTH_SONG_ID"
+done
+
+
