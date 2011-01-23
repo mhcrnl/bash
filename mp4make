@@ -11,16 +11,37 @@ fi
 
 FILE_IN=$1
 
-if [[ "$FILE_IN" =~ ^/ ]];
-  then
+#if [[ "$FILE_IN" =~ ^/ ]];
+#  then
     FROM=$FILE_IN
-  else
-    FROM=`pwd`/$FILE_IN
-fi
+#  else
+#    FROM=`pwd`/$FILE_IN
+#fi
 
-TO="$FROM.mp4"
+TO_PWD="/home/joe/_Handy/_Videos"
+TO="$TO_PWD/$FROM.mp4"
+#TO="$FROM.mp4"
 
-ffmpeg -i "$FROM" -f mp4 -vcodec mpeg4 -maxrate 100k -b 56k -qmin 3 -qmax 5 -bufsize 4096 -g 300 -acodec libfaac -ar 44100 -ab 192k -s 320x240 -aspect 4:3 -r 25 "$TO"
+# Sony Erricson C905
+#CODEC="mpeg4" 
+#OTHER="-maxrate 100k -b 56k -qmin 3 -qmax 5 -bufsize 4096 -g 300"
+#AUDIO="-acodec libfaac -ar 44100 -ab 192k" 
+#RES="-s 320x240 -aspect 4:3" 
+#FRAMERATE="-r 25 "
+
+# Motorola Defy
+CODEC="libx264" 
+OTHER="-vpre medium"
+AUDIO="-acodec libfaac -ar 44100 -ab 192k" 
+#RES="--max_size=854x480 -aspect 16:9" 
+RES="-aspect 16:9" 
+FRAMERATE=""
+#ffmpeg -i "$FROM" -f mp4 -vcodec $CODEC $OTHER $AUDIO $RES $FREAMERATE "$TO"
+#ffmpeg -y -i "$FROM" -acodec libfaac -ar 44100 -ab 96k -coder ac -me_method full -me_range 16 -subq 5 -sc_threshold 40 -vcodec libx264 -vpre medium -b 1600k -cmp +chroma -partitions +parti4x4+partp8x8+partb8x8 -i_qfactor 0.71 -keyint_min 25 -b_strategy 1 -g 250 -r 20 "$TO"
+HandBrakeCLI --preset "Universal_Joe" -O --input "$FROM" --output "$TO"
+
+
+exit
 
 read -t 30 -p "Wohin soll kopiert werden?
 Filme 
@@ -40,4 +61,4 @@ if [[ "$LOC" == "" ]];
     echo "Copying to $LOC"
     movetombile "$TO" $LOC
 fi
-if [ $? == 0 ]; then mv "$TO" "$TO""_sucess"; fi
+if [ $? == 0 ]; then mv "$TO" "$TO""_copied.mp4"; fi

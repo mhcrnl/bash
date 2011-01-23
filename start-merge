@@ -21,39 +21,36 @@ touch $PID
 #read
 if [[ $1 ==  "--sync" ]]; 
 then
-  echo "________________________SYNC PORTAGE TREE________________________\n" >  $LOG
+  echo -e "________________________SYNC PORTAGE TREE________________________\n" >  $LOG
   #emerge --sync >> $LOG
   eix-sync -q >> $LOG
-  echo "___________________________BUILD LIST____________________________\n" >> $LOG
+  echo -e "___________________________BUILD LIST____________________________\n" >> $LOG
 else
-  echo "___________________________BUILD LIST____________________________\n" > $LOG
+  echo -e "___________________________BUILD LIST____________________________\n" > $LOG
 fi
 emerge world -uDpv >> $LOG
-echo "________________________BUILDING PACKAGES________________________\n" >> $LOG
+echo -e "________________________BUILDING PACKAGES________________________\n" >> $LOG
 emerge system -uDNq --keep-going --jobs=2 >> $LOG
-echo "_______"\n							   >> $LOG
+echo -e "_______"\n							   >> $LOG
 emerge world  -uDNq --keep-going --jobs=2 >> $LOG
-echo "____________________________EIX MERGE____________________________\n" >> $LOG
+echo -e "____________________________EIX MERGE____________________________\n" >> $LOG
 PACKAGES=`eix '-u*' --format '<installedversions:NAMESLOT>'`
 echo $PACKAGES >> $LOG
 emerge --keep-going $PACKAGES
-echo "___________________________MEINE BUILDS__________________________\n" >> $LOG
+echo -e "___________________________MEINE BUILDS__________________________\n" >> $LOG
 emerge media-video/ffmpeg 	-q	>> $LOG
-echo "_______"\n							   >> $LOG
+echo -e "_______"\n							   >> $LOG
 emerge www-client/chromium 	-q 	>> $LOG
 #emerge www-client/chromium-bin -qu 	>> $LOG
-#echo "________________________PRESERVED REBUILD________________________\n" >> $LOG
+#echo -e "________________________PRESERVED REBUILD________________________\n" >> $LOG
 #emerge @preserved-rebuild --keep-going -q >> $LOG
-#echo "___________________________TEMP BUILDS___________________________\n" >> $LOG
+#echo -e "___________________________TEMP BUILDS___________________________\n" >> $LOG
 #perl-cleaner --all >> $LOG
 #python-updater >> $LOG
-echo "__________________________REVDEP REBUILD__________________________\n" >> $LOG
+echo -e "__________________________REVDEP REBUILD__________________________\n" >> $LOG
 revdep-rebuild -- --keep-going -q >> $LOG
-echo "________________________________END_______________________________\n" >> $LOG
+echo -e "________________________________END_______________________________\n" >> $LOG
 cat "$LOG" | mail -s "Automerge vom $DATE:" "Johannes.Dielmann@gmail.com"
 cat "$LOG" | xsend.py "Johannes.Dielmann@gmail.com" 
 
 rm $PID
-
-
-#FORMAT_COMPACT="{installedversions}(){}<category>/<name>()" eix -cu | cut -d "[" -f1 | grep "/" | xargs emerge -v
