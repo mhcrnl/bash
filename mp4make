@@ -63,3 +63,11 @@ TO="$TO/$MY_FILE.mp4"
 echo "To:   $TO"
 read
 HandBrakeCLI --preset "Universal_Joe" -O --input "$FROM" --output "$TO"
+if [ $? == 0 ] ;
+  then	    # Aktion wenn bereits gemountet;
+    mplayer /usr/share/sounds/k3b_success1.wav -really-quiet &
+    echo "$TO Succesfully Converted" | osd_cat -o 10 -p bottom -A left --delay=10 --wait -f "-*-helvetica-*-r-*-*-48-*-*-*-*-*-*-*" -O 2 -u orange -c red &
+  else      # Aktion wenn noch nicht gemountet;
+    mplayer /usr/share/sounds/k3b_error1.wav -really-quiet &
+    echo "$TO Failed to Convert!" | osd_cat -o 10 -p bottom -A left --delay=10 --wait -f "-*-helvetica-*-r-*-*-48-*-*-*-*-*-*-*" -O 2 -u orange -c red &
+fi
