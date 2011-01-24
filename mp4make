@@ -67,7 +67,7 @@ TO="$TO/$MY_FILE.mp4"
 echo "From: $FROM"
 echo "To:   $TO"
 
-HandBrakeCLI --preset "Universal_Joe" -O --input "$FROM" --output "$TO"
+HandBrakeCLI --preset "Universal" -O --input "$FROM" --output "$TO"
 if [ $? == 0 ] ;
   then	    # Aktion wenn bereits gemountet;
     echo "$DATE - $TO Succesfully Converted" >> $LOG
