@@ -7,12 +7,14 @@
 #   Using Handbrake to encode Videos.
 #   Move files to a UPnP Server.
 
+DATE=`date +%Y-%m-%d_%H:%M`
 if [ $# -lt 1 ]; then
   echo "Use: $0 <File to convert>"
   exit
 fi
 
 FILE_IN=$1
+TO_IN=$2
 
 if [[ "$FILE_IN" =~ ^/ ]];
   then
@@ -26,15 +28,14 @@ if [[ "$FILE_IN" =~ ^/ ]];
     MY_FILE=$FILE_IN
     FROM=$MY_PATH/$MY_FILE
 fi
-echo "From: $FROM"
 
 MOBILE_MP="/home/joe/_Handy/_Videos"
 [ "$TO_IN" = "" ] && read -t 30 -p "Wohin soll kopiert werden?
 Filme 
 Musikvideos 
 XXX 
-Other 
 TV
+Hier
 Filme ist Standard
 " TO_IN; echo 
 
@@ -47,6 +48,8 @@ case $TO_IN in
   TO=$MOBILE_MP"/_XXX";;
 "TV"*)
   TO=$MOBILE_MP"/_TV";;
+"Hier"*)
+  TO=$MY_PATH;;
 *)
   TO=$MOBILE_MP"/_Filme";;
 esac
@@ -58,16 +61,22 @@ if [ -d $TO ]
     echo "Creating $TO"
     mkdir $TO
 fi 
-
+LOG="$MY_PATH/mp4make.log"
 TO="$TO/$MY_FILE.mp4"
+
+echo "From: $FROM"
 echo "To:   $TO"
-read
+
 HandBrakeCLI --preset "Universal_Joe" -O --input "$FROM" --output "$TO"
 if [ $? == 0 ] ;
   then	    # Aktion wenn bereits gemountet;
+    echo "$DATE - $TO Succesfully Converted" >> $LOG
     mplayer /usr/share/sounds/k3b_success1.wav -really-quiet &
     echo "$TO Succesfully Converted" | osd_cat -o 10 -p bottom -A left --delay=10 --wait -f "-*-helvetica-*-r-*-*-48-*-*-*-*-*-*-*" -O 2 -u orange -c red &
+    xsend.py "Johannes.Dielmann@googlemail.com" "$TO Succesfully Converted" 
   else      # Aktion wenn noch nicht gemountet;
+    echo "$DATE - $TO failed to Convert!" >> $LOG
     mplayer /usr/share/sounds/k3b_error1.wav -really-quiet &
     echo "$TO Failed to Convert!" | osd_cat -o 10 -p bottom -A left --delay=10 --wait -f "-*-helvetica-*-r-*-*-48-*-*-*-*-*-*-*" -O 2 -u orange -c red &
+    xsend.py "Johannes.Dielmann@googlemail.com" "$TO Failed to Convert!" 
 fi

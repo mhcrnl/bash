@@ -18,12 +18,11 @@ then
   exit
 fi
 touch $PID
-#read
 if [[ $1 ==  "--sync" ]]; 
 then
   echo -e "________________________SYNC PORTAGE TREE________________________\n" >  $LOG
   #emerge --sync >> $LOG
-  eix-sync -q >> $LOG
+  eix-sync >> $LOG
   echo -e "___________________________BUILD LIST____________________________\n" >> $LOG
 else
   echo -e "___________________________BUILD LIST____________________________\n" > $LOG
