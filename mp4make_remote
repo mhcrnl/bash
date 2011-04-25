@@ -2,4 +2,5 @@
 #
 # A bash script by JoeD - Joe84D@gmail.com
 # Call mp4make on my server
-ssh joe@miranda "mp4make '$1' $2"
+#ssh joe@miranda "mp4make '$1' $2"
+mp4make $@

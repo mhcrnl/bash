@@ -22,7 +22,7 @@ if [[ $1 ==  "--sync" ]];
 then
   echo -e "________________________SYNC PORTAGE TREE________________________\n" >  $LOG
   #emerge --sync >> $LOG
-  eix-sync >> $LOG
+  eix-sync -q >> $LOG
   echo -e "___________________________BUILD LIST____________________________\n" >> $LOG
 else
   echo -e "___________________________BUILD LIST____________________________\n" > $LOG
@@ -32,17 +32,15 @@ echo -e "________________________BUILDING PACKAGES________________________\n" >>
 emerge system -uDNq --keep-going --jobs=2 >> $LOG
 echo -e "_______"\n							   >> $LOG
 emerge world  -uDNq --keep-going --jobs=2 >> $LOG
-echo -e "____________________________EIX MERGE____________________________\n" >> $LOG
-PACKAGES=`eix '-u*' --format '<installedversions:NAMESLOT>'`
-echo $PACKAGES >> $LOG
-emerge --keep-going $PACKAGES
+#echo -e "____________________________EIX MERGE____________________________\n" >> $LOG
+#PACKAGES=`eix '-u*' --format '<installedversions:NAMESLOT>'`
+#echo $PACKAGES >> $LOG
+#emerge --keep-going $PACKAGES
 echo -e "___________________________MEINE BUILDS__________________________\n" >> $LOG
 emerge media-video/ffmpeg 	-q	>> $LOG
 echo -e "_______"\n							   >> $LOG
 emerge www-client/chromium 	-q 	>> $LOG
 #emerge www-client/chromium-bin -qu 	>> $LOG
-#echo -e "________________________PRESERVED REBUILD________________________\n" >> $LOG
-#emerge @preserved-rebuild --keep-going -q >> $LOG
 #echo -e "___________________________TEMP BUILDS___________________________\n" >> $LOG
 #perl-cleaner --all >> $LOG
 #python-updater >> $LOG

@@ -13,7 +13,7 @@ fi
 
 FILE_IN=$1
 TO_IN=$2
-MOBILE_MP="/mnt/c905/Memory_Stick"
+MOBILE_MP="/mnt/defy"
 
 if [[ "$FILE_IN" =~ ^/ ]];
   then
@@ -35,23 +35,23 @@ Filme ist Standard
 
 case $TO_IN in
 "Filme"*)
-  TO=$MOBILE_MP"/Video/_Handyvideos";;
+  TO=$MOBILE_MP"/Video/Filme";;
 "Musik"*)
-  TO=$MOBILE_MP"/Music";;
+  TO=$MOBILE_MP"/Amarok/_Movetomobile";;
 "Bilder"*)
-  TO=$MOBILE_MP"/Picture";;
+  TO=$MOBILE_MP"/Pictures";;
 "XXX"*)
-  TO=$MOBILE_MP"/Video/podcast/Eigene";;
+  TO=$MOBILE_MP"/Video/XXX";;
 "TV"*)
-  TO=$MOBILE_MP"/Music/podcast/MythTV";;
+  TO=$MOBILE_MP"/Music/MythTV";;
 "MythTV"*)
-  TO=$MOBILE_MP"/Music/podcast/MythTV";;
+  TO=$MOBILE_MP"/Music/MythTV";;
 "Hörbücher"*)
   TO=$MOBILE_MP"/Music/Hörbücher";;
 "Other"*)
   TO=$MOBILE_MP"/Other";;
 *)
-  TO=$MOBILE_MP"/Video";;
+  TO=$MOBILE_MP"/Other";;
 esac
 
 mount | grep $MOBILE_MP ; # <-- z.B. /home
