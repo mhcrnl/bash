@@ -4,5 +4,13 @@
 #
 # Opens a session to a Terminal Server at my FH
 
+sudo /etc/init.d/vpnc start
+sleep 10
+sudo mount /mnt/rac/jdielman
+sudo mount /mnt/rac/lehre
 PASS=`cat /etc/cardatgirl`
 rdesktop tserver1.rheinahrcampus.de -g 1600x1180 -u jdielman -d racampus -p $PASS
+sudo umount /mnt/rac/jdielman
+sudo umount /mnt/rac/lehre
+sudo /etc/init.d/vpnc stop
+

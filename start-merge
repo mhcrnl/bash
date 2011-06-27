@@ -20,34 +20,35 @@ fi
 touch $PID
 if [[ $1 ==  "--sync" ]]; 
 then
-  echo -e "________________________SYNC PORTAGE TREE________________________\n" >  $LOG
-  #emerge --sync >> $LOG
-  eix-sync -q >> $LOG
-  echo -e "___________________________BUILD LIST____________________________\n" >> $LOG
-else
-  echo -e "___________________________BUILD LIST____________________________\n" > $LOG
+  echo -e "________________________SYNC PORTAGE TREE_______________________\n" >  $LOG
+  #emerge --sync 						 	       >> $LOG
+  eix-sync -q #								       >> $LOG
+  #echo -e "___________________________BUILD LIST__________________________\n" >> $LOG
+#else
+  #echo -e "___________________________BUILD LIST___________________________\n" > $LOG
 fi
-emerge world -uDpv >> $LOG
-echo -e "________________________BUILDING PACKAGES________________________\n" >> $LOG
-emerge system -uDNq --keep-going --jobs=2 >> $LOG
-echo -e "_______"\n							   >> $LOG
-emerge world  -uDNq --keep-going --jobs=2 >> $LOG
+#emerge world -uDpv >> $LOG
+echo -e "________________________BUILDING PACKAGES_________________________\n" >> $LOG
+emerge system -uDNq --keep-going --jobs=2				  2>&1 >> $LOG
+echo -e "_______"\n							       >> $LOG
+emerge world  -uDNq --keep-going --jobs=2				  2>&1 >> $LOG
 #echo -e "____________________________EIX MERGE____________________________\n" >> $LOG
 #PACKAGES=`eix '-u*' --format '<installedversions:NAMESLOT>'`
-#echo $PACKAGES >> $LOG
+#echo $PACKAGES 							       >> $LOG
 #emerge --keep-going $PACKAGES
-echo -e "___________________________MEINE BUILDS__________________________\n" >> $LOG
-emerge media-video/ffmpeg 	-q	>> $LOG
-echo -e "_______"\n							   >> $LOG
-emerge www-client/chromium 	-q 	>> $LOG
-#emerge www-client/chromium-bin -qu 	>> $LOG
+#echo -e "___________________________MEINE BUILDS___________________________\n" >> $LOG
+#emerge media-video/ffmpeg 	-q					       >> $LOG
+#echo -e "_______"\n							       >> $LOG
+#emerge www-client/chromium 	-q 					  2>&1 >> $LOG
+#emerge www-client/chromium-bin -qu 					       >> $LOG
 #echo -e "___________________________TEMP BUILDS___________________________\n" >> $LOG
-#perl-cleaner --all >> $LOG
-#python-updater >> $LOG
+#perl-cleaner --all 							       >> $LOG
+#python-updater 							       >> $LOG
 echo -e "__________________________REVDEP REBUILD__________________________\n" >> $LOG
-revdep-rebuild -- --keep-going -q >> $LOG
+revdep-rebuild -- --keep-going -q 					       >> $LOG
 echo -e "________________________________END_______________________________\n" >> $LOG
 cat "$LOG" | mail -s "Automerge vom $DATE:" "Johannes.Dielmann@gmail.com"
-cat "$LOG" | xsend.py "Johannes.Dielmann@gmail.com" 
+cat "$LOG" | xsend.py "Johannes.Dielmann@googlemail.com" 
+echo "Automerge fertiggestellt um `date +%Y-%m-%d_%Hh%Mm`" | xsend.py "Johannes.Dielmann@googlemail.com/androidb620c96cd02a"
 
 rm $PID

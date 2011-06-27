@@ -4,5 +4,5 @@
 #
 # Cleans out any Profile Data and starts Chromium in a clean enviroment.
 
-rm -rf /home/joe/.config/chromium/Clean 
-chromium --user-data-dir=/home/joe/.config/chromium/Clean -enable-default-apps
+#rm -rf /home/joe/.config/chromium/Clean 
+chromium-live --user-data-dir=/tmp/chromium/Clean -enable-default-apps

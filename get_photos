@@ -4,7 +4,7 @@
 #
 # Mounting my mobile and moving the Photos from the Camera to the PC
 
-MOBILE_MP="/mnt/c905/Memory_Stick"
+MOBILE_MP="/mnt/defy"
 mount | grep $MOBILE_MP ; # <-- z.B. /home
 if [ $? == 0 ] ;
   then	    # Aktion wenn bereits gemountet;
@@ -15,5 +15,5 @@ if [ $? == 0 ] ;
     if [ $? != 0 ]; then exit; fi
 fi
 
-mv $MOBILE_MP/DCIM/100MSDCF/* "/home/joe/_Handy/_Incomming"
+mv $MOBILE_MP/dcim/Camera/* "/home/joe/_Defy/__Incomming"
 #rsync -r $MOBILE_MP/DCIM/100MSDCF/ /home/joe/_Handy/_Incomming --del --progress

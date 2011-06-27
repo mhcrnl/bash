@@ -1,0 +1,3 @@
+#!/bin/bash
+MYPATH="/home/joe/.minecraft/bin"
+java -Xms512M -Xmx1024M  -Xincgc -cp "$MYPATH/minecraft.jar:$MYPATH/jinput.jar:$MYPATH/lwjgl.jar:$MYPATH/lwjgl_util.jar" -Dorg.lwjgl.librarypath="$MYPATH/natives" -Dnet.java.games.input.librarypath="$MYPATH/natives" net.minecraft.client.Minecraft JoeD
