@@ -1,0 +1,37 @@
+#!/bin/bash
+#
+# A bash script by JoeD - Joe84D@gmail.com
+#
+# A Script that cleans out evrything of the amarok database with a given ID
+#
+user=amarok
+password=amarok
+db=amarok2
+db_host=joed.homeip.net
+id=59
+tables="
+directories
+embed
+images
+lyrics
+statistics
+tags
+tags_labels
+uniqueid"
+
+entries=$(mysql -u $user -p$password $db -h $db_host -e "SELECT dir FROM directories ;")
+
+
+for entry in $entries
+do
+  echo "$entry"
+  ls -l "$entry"
+  #SQL_1='SELECT `*` FROM `urls` WHERE dir =' $entry
+  #echo $SQL_1
+  #mysql -u $user -p$password $db -h $db_host -e "$SQL_11"
+done
+
+#SQL_21='DELETE FROM `devices` WHERE `devices`.`id` = '$id
+#SQL_22='SELECT * FROM `devices` WHERE `devices`.`id` = '$id
+#echo $SQL_2
+#mysql -u $user -p$password $db -h $db_host -e "$SQL_21"
