@@ -7,8 +7,7 @@
 user=amarok
 password=amarok
 db=amarok2
-db_host=joed.homeip.net
-id=59
+db_host=mysql
 tables="
 directories
 embed
@@ -19,19 +18,15 @@ tags
 tags_labels
 uniqueid"
 
-entries=$(mysql -u $user -p$password $db -h $db_host -e "SELECT dir FROM directories ;")
-
-
-for entry in $entries
+mysql -u $user -p$password $db -h $db_host -e "SELECT SUBSTRING(rpath FROM 2) FROM urls ;" | while read entry
 do
-  echo "$entry"
-  ls -l "$entry"
+  #echo "Test: $entry"
+  if [ ! -f  "$entry" ] 
+    then echo "Not Exists: $entry" 
+  fi
+  #ls -l "'$entry'"
   #SQL_1='SELECT `*` FROM `urls` WHERE dir =' $entry
   #echo $SQL_1
   #mysql -u $user -p$password $db -h $db_host -e "$SQL_11"
+  #echo "_______END______"
 done
-
-#SQL_21='DELETE FROM `devices` WHERE `devices`.`id` = '$id
-#SQL_22='SELECT * FROM `devices` WHERE `devices`.`id` = '$id
-#echo $SQL_2
-#mysql -u $user -p$password $db -h $db_host -e "$SQL_21"
