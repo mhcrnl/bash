@@ -4,9 +4,9 @@
 #
 # Opens a VNC Session to my Server or starts JDownloader if started on the server
 
-if [ `hostname` = "miranda" ]
+if [ `hostname` = "mae" ]
 then
-  java -jar /usr/local/JD/JDownloader.jar
+  java -jar /usr/local/JD/JDownloader.jar -branch NIGHTLY
 else
   vncviewer -passwd /home/joe/.vnc/miranda miranda
 fi

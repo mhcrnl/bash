@@ -1,0 +1,2 @@
+#!/bin/bash
+xsend.py "Johannes.Dielmann@gmail.com/androidb620c96cd02a" "$1"

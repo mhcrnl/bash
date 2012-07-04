@@ -1,0 +1,7 @@
+#!/bin/bash
+STREAM="http://wdr-5.akacast.akamaistream.net/7/41/119439/v1/gnl.akacast.akamaistream.net/wdr-5"
+D_OUT='/home/joe/!Temp'
+DURATION=7200
+DATE=`date "+%Y%m%d_%H_%M"`
+TITLE="$DATE-WDR5_$1"
+streamripper "$STREAM" -d "$D_OUT" -s -l $DURATION -a "$TITLE" -A

@@ -48,7 +48,7 @@ echo -e "__________________________REVDEP REBUILD__________________________\n" >
 revdep-rebuild -- --keep-going -q 					       >> $LOG
 echo -e "________________________________END_______________________________\n" >> $LOG
 cat "$LOG" | mail -s "Automerge vom $DATE:" "Johannes.Dielmann@gmail.com"
-cat "$LOG" | xsend.py "Johannes.Dielmann@googlemail.com" 
-echo "Automerge fertiggestellt um `date +%Y-%m-%d_%Hh%Mm`" | xsend.py "Johannes.Dielmann@googlemail.com/androidb620c96cd02a"
+#cat "$LOG" | xsend.py "Johannes.Dielmann@googlemail.com" 
+xsend.py "Johannes.Dielmann@googlemail.com/androidb620c96cd02a" "Automerge fertiggestellt um `date +%Y-%m-%d_%Hh%Mm`"
 
 rm $PID
