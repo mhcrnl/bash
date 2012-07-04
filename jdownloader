@@ -8,5 +8,5 @@ if [ `hostname` = "mae" ]
 then
   java -jar /usr/local/JD/JDownloader.jar -branch NIGHTLY
 else
-  vncviewer -passwd /home/joe/.vnc/miranda miranda
+  vncviewer -passwd /home/joe/.vnc/michelle michelle:0
 fi

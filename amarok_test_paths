@@ -1,0 +1,32 @@
+#!/bin/bash
+#
+# A bash script by JoeD - Joe84D@gmail.com
+#
+# A Script that cleans out evrything of the amarok database with a given ID
+#
+user=amarok
+password=amarok
+db=amarok2
+db_host=mysql
+tables="
+directories
+embed
+images
+lyrics
+statistics
+tags
+tags_labels
+uniqueid"
+
+mysql -u $user -p$password $db -h $db_host -e "SELECT SUBSTRING(rpath FROM 2) FROM urls ;" | while read entry
+do
+  #echo "Test: $entry"
+  if [ ! -f  "$entry" ] 
+    then echo "Not Exists: $entry" 
+  fi
+  #ls -l "'$entry'"
+  #SQL_1='SELECT `*` FROM `urls` WHERE dir =' $entry
+  #echo $SQL_1
+  #mysql -u $user -p$password $db -h $db_host -e "$SQL_11"
+  #echo "_______END______"
+done
